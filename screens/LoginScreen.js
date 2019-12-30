@@ -1,6 +1,7 @@
 import React from 'react';
-import {View, Text, StyleSheet, TextInput, TouchableOpacity, Image, StatusBar, LayoutAnimation} from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, StatusBar, LayoutAnimation, KeyboardAvoidingView } from 'react-native';
 import * as firebase from 'firebase'
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default class LoginScreen extends React.Component {
   static navigationOptions = {
@@ -14,78 +15,82 @@ export default class LoginScreen extends React.Component {
   };
 
   handleLogin = () => {
-    const {email, password} = this.state
+    const { email, password } = this.state
 
     firebase
-    .auth()
-    .signInWithEmailAndPassword(email, password)
-    .catch(error => this.setState({errorMessage: error.message}));
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .catch(error => this.setState({ errorMessage: error.message }));
   };
-  
+
   render() {
     LayoutAnimation.easeInEaseOut();
 
     return (
-      <View style={styles.container}> 
+      <KeyboardAvoidingView style={styles.container} behavior="padding">
         <StatusBar barStyle="light-content"></StatusBar>
 
-        <Image 
-        source={require("../assets/authHeader.png")}
-        style={{ marginTop: -186, marginLeft: -60}}
-        ></Image>
+        <ScrollView>
 
-        <Image
-        source={require("../assets/authFooter.png")}
-        style={{ position: "absolute", bottom: -325, right: -225}}
-        ></Image>
+          <Image
+            source={require("../assets/authHeader.png")}
+            style={{ marginTop: -186, marginLeft: -60 }}
+          ></Image>
 
-        <Image
-        source={require("../assets/loginLogo.png")}
-        style={{ marginTop: -110, alignSelf: "center"}}
-        ></Image>
+          <Image
+            source={require("../assets/authFooter.png")}
+            style={{ position: "absolute", bottom: -325, right: -225 }}
+          ></Image>
 
-        <Text style={styles.greeting}>{'Hello \n Welcome back.'}</Text>
+          <Image
+            source={require("../assets/loginLogo.png")}
+            style={{ marginTop: -110, alignSelf: "center" }}
+          ></Image>
 
-        <View style={styles.errorMessage}>
-          {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
-        </View>
+          <Text style={styles.greeting}>{'Hello \n Welcome back.'}</Text>
 
-        <View style={styles.form}>
-          
-          <View>
-            <Text style={styles.inputTitle}>Email Address</Text>
-            <TextInput 
-            style={styles.input} 
-            autoCapitalize="none"
-            onChangeText={email => this.setState({email})}
-            value={this.state.email}
-            ></TextInput>
+          <View style={styles.errorMessage}>
+            {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
           </View>
 
-          <View style={{marginTop: 26}}>
-            <Text style={styles.inputTitle}>Password</Text>
-            <TextInput 
-            style={styles.input} 
-            secureTextEntry 
-            autoCapitalize="none"
-            onChangeText={password => this.setState({password})}
-            value={this.state.password}
-            ></TextInput>
+          <View style={styles.form}>
+
+            <View>
+              <Text style={styles.inputTitle}>Email Address</Text>
+              <TextInput
+                style={styles.input}
+                autoCapitalize="none"
+                onChangeText={email => this.setState({ email })}
+                value={this.state.email}
+              ></TextInput>
+            </View>
+
+            <View style={{ marginTop: 26 }}>
+              <Text style={styles.inputTitle}>Password</Text>
+              <TextInput
+                style={styles.input}
+                secureTextEntry
+                autoCapitalize="none"
+                onChangeText={password => this.setState({ password })}
+                value={this.state.password}
+              ></TextInput>
+            </View>
+
           </View>
 
-        </View>
+          <TouchableOpacity style={styles.button} onPress={this.handleLogin} >
+            <Text style={{ color: "#FFF", fontWeight: "500" }}>Sign in</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={this.handleLogin} >
-          <Text style={{ color: "#FFF", fontWeight: "500" }}>Sign in</Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity style={{ alignSelf: "center", marginTop: 26 }} onPress={() => this.props.navigation.navigate("Register")} >
-          <Text style={{ color: "#414959", fontSize: 14 }}>
-            New to Social? <Text style={{fontWeight: "500", color: "#E9446A" }}>Sign Up</Text>
-          </Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={{ alignSelf: "center", marginTop: 26, marginBottom: 26 }} onPress={() => this.props.navigation.navigate("Register")} >
+            <Text style={{ color: "#414959", fontSize: 14 }}>
+              New to Social? <Text style={{ fontWeight: "500", color: "#E9446A" }}>Sign Up</Text>
+            </Text>
+          </TouchableOpacity>
 
-      </View>
+        </ScrollView>
+
+      </KeyboardAvoidingView>
     )
   }
 }
